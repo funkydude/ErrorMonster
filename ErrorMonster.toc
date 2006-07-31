@@ -8,6 +8,7 @@
 ## X-eMail: rabbit.magtheridon@gmail.com
 ## X-Website: http://www.wowace.com
 ## SavedVariables: ErrorMonsterDB, ErrorMonsterDBChar
+## OptionalDeps: Ace2
 
 libs\AceLibrary\AceLibrary.lua
 libs\AceOO\AceOO-2.0.lua
