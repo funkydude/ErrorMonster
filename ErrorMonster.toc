@@ -1,9 +1,9 @@
-## Interface: 11100
+## Interface: 11200
 ## Title: ErrorMonster |cff7fff7f -Ace2-|r
 ## Author: Rabbit
 ## Notes: Filters out some of the annoying error messages during combat as a rogue
 ## DefaultState: Enabled
-## Version: 1
+## Version: 2
 ## X-Category: Combat
 ## X-eMail: rabbit.magtheridon@gmail.com
 ## X-Website: http://www.wowace.com
