@@ -6,9 +6,10 @@ L:RegisterTranslations("enUS", function()
 		["Adds the given filter to the ignore list."] = true,
 		["<filter>"] = true,
 		["Removes the given filter or ID from the filter list."] = true,
-        ["Adding filter: "] = true,
-        ["Removing filter: "] = true,
-        ["Filter not found: "] = true,
-        ["Active filters:"] = true,
+		["Adding filter: "] = true,
+		["Removing filter: "] = true,
+		["Filter not found: "] = true,
+		["Active filters:"] = true,
 	}
 end)
+
