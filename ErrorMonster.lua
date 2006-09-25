@@ -1,4 +1,4 @@
---
+ --
 -- ErrorMonster
 -- by Rabbit
 -- originally RogueSpam by Allara
@@ -28,6 +28,11 @@ function ErrorMonster:OnInitialize()
 			SPELL_FAILED_BAD_TARGETS,       -- Invalid target
 			SPELL_FAILED_NOT_MOUNTED,       -- You are mounted
 			SPELL_FAILED_NOT_ON_TAXI,       -- You are in flight
+			-- Mikma's lines start here
+			ERR_OUT_OF_MANA,		-- Not enough mana
+			ERR_NOEMOTEWHILERUNNING,	-- You can't do that while moving!
+			SPELL_FAILED_NOT_INFRONT,	-- You must be in front of your target
+			SPELL_FAILED_NOT_IN_CONTROL,	-- You are not in control of your actions
 		},
 	})
 
