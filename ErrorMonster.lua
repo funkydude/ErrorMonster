@@ -61,7 +61,7 @@ function ErrorMonster:OnInitialize()
 		},
 	}
 
-	self:RegisterChatCommand({"/errormonster", "/em"}, args)
+	self:RegisterChatCommand({"/errormonster", "/errm"}, args)
 end
 
 function ErrorMonster:OnEnable()
@@ -70,7 +70,7 @@ function ErrorMonster:OnEnable()
 end
 
 function ErrorMonster:ErrorFrameOnEvent(event, message, arg1, arg2, arg3, arg4)
-	for key, text in self.db.char.errorList do
+	for key, text in pairs(self.db.char.errorList) do
 		if (text and message) and (message == text) then return end
 	end
 	self.hooks["UIErrorsFrame_OnEvent"](event, message, arg1, arg2, arg3, arg4)
@@ -84,7 +84,7 @@ end
 function ErrorMonster:RemoveFilter(filter)
 	local numCompare = nil
 	if tonumber(filter) then numCompare = true end
-	for key, text in self.db.char.errorList do
+	for key, text in pairs(self.db.char.errorList) do
 		if text == filter or (numCompare and tonumber(filter) == tonumber(key)) then
 			self:Print(L["Removing filter: "]..text)
 			table.remove(self.db.char.errorList, key)
@@ -96,7 +96,7 @@ end
 
 function ErrorMonster:ListFilters()
 	self:Print(L["Active filters:"])
-	for key, text in self.db.char.errorList do
+	for key, text in pairs(self.db.char.errorList) do
 		self:Print(" "..key..". "..text)
 	end
 end
