@@ -6,7 +6,7 @@
 
 ErrorMonster = AceLibrary("AceAddon-2.0"):new("AceHook-2.0", "AceConsole-2.0", "AceDB-2.0", "AceEvent-2.0")
 
-local L = AceLibrary("AceLocale-2.0"):new("ErrorMonster")
+local L = AceLibrary("AceLocale-2.2"):new("ErrorMonster")
 
 function ErrorMonster:OnInitialize()
 	ErrorMonster:RegisterDB("ErrorMonsterDB", "ErrorMonsterDBChar")

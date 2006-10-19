@@ -17,7 +17,7 @@ libs\AceDB\AceDB-2.0.lua
 libs\AceHook\AceHook-2.0.lua
 libs\AceConsole\AceConsole-2.0.lua
 libs\AceAddon\AceAddon-2.0.lua
-libs\AceLocale\AceLocale-2.0.lua
+libs\AceLocale\AceLocale-2.2.lua
 
 ErrorMonster-enUS.lua
 ErrorMonster.lua
