@@ -4,7 +4,7 @@
 -- originally RogueSpam by Allara
 --
 
-ErrorMonster = AceLibrary("AceAddon-2.0"):new("AceHook-2.0", "AceConsole-2.0", "AceDB-2.0", "AceEvent-2.0")
+ErrorMonster = AceLibrary("AceAddon-2.0"):new("AceHook-2.1", "AceConsole-2.0", "AceDB-2.0", "AceEvent-2.0")
 
 local L = AceLibrary("AceLocale-2.2"):new("ErrorMonster")
 
