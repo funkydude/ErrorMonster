@@ -12,27 +12,28 @@ function ErrorMonster:OnInitialize()
 	ErrorMonster:RegisterDB("ErrorMonsterDB", "ErrorMonsterDBChar")
 	ErrorMonster:RegisterDefaults('char', {
 		errorList = {
-			ERR_ABILITY_COOLDOWN,           -- Ability is not ready yet.
-			ERR_OUT_OF_ENERGY,              -- Not enough energy
-			ERR_NO_ATTACK_TARGET,           -- There is nothing to attack.
 			SPELL_FAILED_NO_COMBO_POINTS,   -- That ability requires combo points
 			SPELL_FAILED_TARGETS_DEAD,      -- Your target is dead
 			SPELL_FAILED_SPELL_IN_PROGRESS, -- Another action is in progress
-			ERR_SPELL_COOLDOWN,             -- Spell is not ready yet. (Spell)
-			OUT_OF_ENERGY,                  -- Not enough energy.
-			ERR_OUT_OF_RAGE,                -- Not enough rage.
 			SPELL_FAILED_TARGET_AURASTATE,  -- You can't do that yet. (TargetAura)
 			SPELL_FAILED_CASTER_AURASTATE,  -- You can't do that yet. (CasterAura)
 			SPELL_FAILED_NO_ENDURANCE,      -- Not enough endurance
-			ERR_INVALID_ATTACK_TARGET,      -- You cannot attack that target.
 			SPELL_FAILED_BAD_TARGETS,       -- Invalid target
 			SPELL_FAILED_NOT_MOUNTED,       -- You are mounted
 			SPELL_FAILED_NOT_ON_TAXI,       -- You are in flight
-			-- Mikma's lines start here
-			ERR_OUT_OF_MANA,		-- Not enough mana
-			ERR_NOEMOTEWHILERUNNING,	-- You can't do that while moving!
-			SPELL_FAILED_NOT_INFRONT,	-- You must be in front of your target
-			SPELL_FAILED_NOT_IN_CONTROL,	-- You are not in control of your actions
+			SPELL_FAILED_NOT_INFRONT,       -- You must be in front of your target
+			SPELL_FAILED_NOT_IN_CONTROL,    -- You are not in control of your actions
+			SPELL_FAILED_MOVING,            -- Can't do that while moving
+			ERR_GENERIC_NO_TARGET,          -- You have no target.
+			ERR_ABILITY_COOLDOWN,           -- Ability is not ready yet.
+			ERR_OUT_OF_ENERGY,              -- Not enough energy
+			ERR_NO_ATTACK_TARGET,           -- There is nothing to attack.
+			ERR_SPELL_COOLDOWN,             -- Spell is not ready yet. (Spell)
+			ERR_OUT_OF_RAGE,                -- Not enough rage.
+			ERR_INVALID_ATTACK_TARGET,      -- You cannot attack that target.
+			ERR_OUT_OF_MANA,                -- Not enough mana
+			ERR_NOEMOTEWHILERUNNING,        -- You can't do that while moving!
+			OUT_OF_ENERGY,                  -- Not enough energy.
 		},
 	})
 
@@ -65,15 +66,15 @@ function ErrorMonster:OnInitialize()
 end
 
 function ErrorMonster:OnEnable()
-	self:Hook("UIErrorsFrame_OnEvent", "ErrorFrameOnEvent")
+	self:Hook(UIErrorsFrame, "AddMessage", true)
 	--  CHAT_MSG_SPELL_FAILED_LOCALPLAYER
 end
 
-function ErrorMonster:ErrorFrameOnEvent(event, message, arg1, arg2, arg3, arg4)
+function ErrorMonster:AddMessage(frame, message, r, g, b, a)
 	for key, text in pairs(self.db.char.errorList) do
-		if (text and message) and (message == text) then return end
+		if text and message and message == text then return end
 	end
-	self.hooks["UIErrorsFrame_OnEvent"](event, message, arg1, arg2, arg3, arg4)
+	self.hooks[UIErrorsFrame].AddMessage(frame, message, r, g, b, a)
 end
 
 function ErrorMonster:AddFilter(filter)
