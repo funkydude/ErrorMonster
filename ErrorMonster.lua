@@ -10,7 +10,10 @@ local L = AceLibrary("AceLocale-2.2"):new("ErrorMonster")
 
 function ErrorMonster:OnInitialize()
 	ErrorMonster:RegisterDB("ErrorMonsterDB", "ErrorMonsterDBChar")
-	ErrorMonster:RegisterDefaults('char', {
+	ErrorMonster:RegisterDefaults("profile", {
+		sink = L["Monster"],
+	})
+	ErrorMonster:RegisterDefaults("char", {
 		errorList = {
 			SPELL_FAILED_NO_COMBO_POINTS,   -- That ability requires combo points
 			SPELL_FAILED_TARGETS_DEAD,      -- Your target is dead
@@ -59,6 +62,20 @@ function ErrorMonster:OnInitialize()
 				set   = function(text) self:RemoveFilter(text) end,
 				get   = false,
 			},
+			sink = {
+				name  = "sink", type = "text",
+				desc  = L["Where to flush the messages matched by the filters."],
+				get = function() return ErrorMonster.db.profile.sink end,
+				set = function(v) ErrorMonster.db.profile.sink = v end,
+				validate = {
+					L["Monster"],
+					"BigWigs",
+					"Scrolling Combat Text",
+					"Scrolling Combat Text Message",
+					"MSBT",
+					"Blizzard FCT",
+				},
+			},
 		},
 	}
 
@@ -70,9 +87,30 @@ function ErrorMonster:OnEnable()
 	--  CHAT_MSG_SPELL_FAILED_LOCALPLAYER
 end
 
+function ErrorMonster:Flush(message)
+	local sink = self.db.profile.sink
+
+	if sink == L["Monster"] then return end -- Default, eat it!
+
+	if sink == "BigWigs" and BigWigs then
+		self:TriggerEvent("BigWigs_Message", message, "Red", false, nil)
+	elseif sink == "Scrolling Combat Text" and SCT and type(SCT.DisplayText) == "function" then
+		SCT:DisplayText(message, { r = 1.0, g = 0.0, b = 0.0 }, nil, "event", 1)
+	elseif sink == "Scrolling Combat Text Message" and SCT and type(SCT.DisplayMessage) == "function" then
+		SCT:DisplayMessage(message, { r = 1.0, g = 0.0, b = 0.0 })
+	elseif sink == "MSBT" and MikSBT then
+		MikSBT.DisplayMessage(message, MikSBT.DISPLAYTYPE_NOTIFICATION, false, 255, 0, 0)
+	elseif sink == "Blizzard FCT" and CombatText_AddMessage then
+		CombatText_AddMessage(message, COMBAT_TEXT_SCROLL_FUNCTION, 1.0, 0.0, 0.0, "sticky", nil)
+	end
+end
+
 function ErrorMonster:AddMessage(frame, message, r, g, b, a)
 	for key, text in pairs(self.db.char.errorList) do
-		if text and message and message == text then return end
+		if text and message and message == text then
+			self:Flush(message)
+			return
+		end
 	end
 	self.hooks[UIErrorsFrame].AddMessage(frame, message, r, g, b, a)
 end

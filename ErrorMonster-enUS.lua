@@ -9,5 +9,7 @@ L:RegisterTranslations("enUS", function() return {
 	["Removing filter: "] = true,
 	["Filter not found: "] = true,
 	["Active filters:"] = true,
+	["Where to flush the messages matched by the filters."] = true,
+	["Monster"] = true,
 } end)
 
