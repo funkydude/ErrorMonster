@@ -7,11 +7,13 @@
 ErrorMonster = AceLibrary("AceAddon-2.0"):new("AceHook-2.1", "AceConsole-2.0", "AceDB-2.0", "AceEvent-2.0")
 
 local L = AceLibrary("AceLocale-2.2"):new("ErrorMonster")
+local throttle = nil
 
 function ErrorMonster:OnInitialize()
 	ErrorMonster:RegisterDB("ErrorMonsterDB", "ErrorMonsterDBChar")
 	ErrorMonster:RegisterDefaults("profile", {
 		sink = L["Monster"],
+		throttle = 0,
 	})
 	ErrorMonster:RegisterDefaults("char", {
 		errorList = {
@@ -76,6 +78,13 @@ function ErrorMonster:OnInitialize()
 					"Blizzard FCT",
 				},
 			},
+			throttle = {
+				name = "throttle", type = "range",
+				desc = L["Throttle errors at the given rate in seconds."],
+				min = 0, max = 10,
+				get = function() return ErrorMonster.db.profile.throttle end,
+				set = function(v) ErrorMonster.db.profile.throttle = v end,
+			},
 		},
 	}
 
@@ -84,13 +93,28 @@ end
 
 function ErrorMonster:OnEnable()
 	self:Hook(UIErrorsFrame, "AddMessage", true)
+	self:RegisterEvent("PLAYER_ENTERING_WORLD")
 	--  CHAT_MSG_SPELL_FAILED_LOCALPLAYER
+end
+
+function ErrorMonster:PLAYER_ENTERING_WORLD()
+	if throttle ~= nil then
+		for i in pairs(throttle) do
+			throttle[i] = nil
+		end
+		throttle = nil
+	end
 end
 
 function ErrorMonster:Flush(message)
 	local sink = self.db.profile.sink
-
 	if sink == L["Monster"] then return end -- Default, eat it!
+
+	if self.db.profile.throttle > 0 then
+		if throttle == nil then throttle = {} end
+		if throttle[message] and (throttle[message] + self.db.profile.throttle > GetTime()) then return end
+		throttle[message] = GetTime()
+	end
 
 	if sink == "BigWigs" and BigWigs then
 		self:TriggerEvent("BigWigs_Message", message, "Red", false, nil)
