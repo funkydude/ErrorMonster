@@ -14,6 +14,7 @@ function ErrorMonster:OnInitialize()
 	ErrorMonster:RegisterDefaults("profile", {
 		sink = L["Monster"],
 		throttle = 0,
+		berserk = false,
 	})
 	ErrorMonster:RegisterDefaults("char", {
 		errorList = {
@@ -90,6 +91,12 @@ function ErrorMonster:OnInitialize()
 				get = function() return ErrorMonster.db.profile.throttle end,
 				set = function(v) ErrorMonster.db.profile.throttle = v end,
 			},
+			berserk = {
+				name = "berserk", type = "toggle",
+				desc = L["Go berserk and eat all the errors."],
+				get = function() return ErrorMonster.db.profile.berserk end,
+				set = function(v) ErrorMonster.db.profile.berserk = v end,
+			}
 		},
 	}
 
@@ -113,6 +120,9 @@ end
 
 function ErrorMonster:Flush(message)
 	local sink = self.db.profile.sink
+
+	self:TriggerEvent("ErrorMonster_MessageFlushed", message)
+
 	if sink == L["Monster"] then return end -- Default, eat it!
 
 	if self.db.profile.throttle > 0 then
@@ -120,6 +130,8 @@ function ErrorMonster:Flush(message)
 		if throttle[message] and (throttle[message] + self.db.profile.throttle > GetTime()) then return end
 		throttle[message] = GetTime()
 	end
+
+	self:TriggerEvent("ErrorMonster_Message", message)
 
 	if sink == "BigWigs" and BigWigs then
 		self:TriggerEvent("BigWigs_Message", message, "Red", false, nil)
@@ -140,6 +152,11 @@ function ErrorMonster:Flush(message)
 end
 
 function ErrorMonster:AddMessage(frame, message, r, g, b, a)
+	if self.db.profile.berserk then
+		self:Flush(message)
+		return
+	end
+
 	for key, text in pairs(self.db.char.errorList) do
 		if text and message and message == text then
 			self:Flush(message)

@@ -12,5 +12,6 @@ L:RegisterTranslations("enUS", function() return {
 	["Where to flush the messages matched by the filters."] = true,
 	["Monster"] = true,
 	["Throttle errors at the given rate in seconds."] = true,
+	["Go berserk and eat all the errors."] = true,
 } end)
 
