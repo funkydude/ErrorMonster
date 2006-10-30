@@ -134,7 +134,7 @@ function ErrorMonster:Flush(message)
 	elseif string.find(sink, "ChatFrame") then
 		local f = getglobal(sink)
 		if f ~= nil and type(f.GetObjectType) == "function" and f:GetObjectType() == "ScrollingMessageFrame" and type(f.AddMessage) == "function" then
-			f:AddMessage(message, 1, 0, 0)
+			f:AddMessage(message, 1, 0, 0, "ErrorMonster")
 		end
 	end
 end
