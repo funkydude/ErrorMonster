@@ -69,14 +69,19 @@ function ErrorMonster:OnInitialize()
 				desc  = L["Where to flush the messages matched by the filters."],
 				get = function() return ErrorMonster.db.profile.sink end,
 				set = function(v) ErrorMonster.db.profile.sink = v end,
-				validate = {
-					L["Monster"],
-					"BigWigs",
-					"Scrolling Combat Text",
-					"Scrolling Combat Text Message",
-					"MSBT",
-					"Blizzard FCT",
-				},
+				usage = "<"..L["Monster"]..", BigWigs, Scrolling Combat Text, Scrolling Combat Text Message, MSBT, Blizzard FCT or ChatFrame1-10>",
+				validate = function(input)
+					local _,_,x = string.find(input, "ChatFrame(%d+)")
+					if x ~= nil and tonumber(x) ~= nil then
+						return tonumber(x) > 0 and tonumber(x) < 11
+					end
+					return	input == L["Monster"] or
+							input == "BigWigs" or
+							input == "Scrolling Combat Text" or
+							input == "Scrolling Combat Text Message" or
+							input == "MSBT" or
+							input == "Blizzard FCT"
+					end
 			},
 			throttle = {
 				name = "throttle", type = "range",
@@ -126,6 +131,11 @@ function ErrorMonster:Flush(message)
 		MikSBT.DisplayMessage(message, MikSBT.DISPLAYTYPE_NOTIFICATION, false, 255, 0, 0)
 	elseif sink == "Blizzard FCT" and CombatText_AddMessage then
 		CombatText_AddMessage(message, COMBAT_TEXT_SCROLL_FUNCTION, 1.0, 0.0, 0.0, "sticky", nil)
+	elseif string.find(sink, "ChatFrame") then
+		local f = getglobal(sink)
+		if f ~= nil and type(f.GetObjectType) == "function" and f:GetObjectType() == "ScrollingMessageFrame" and type(f.AddMessage) == "function" then
+			f:AddMessage(message, 1, 0, 0)
+		end
 	end
 end
 
