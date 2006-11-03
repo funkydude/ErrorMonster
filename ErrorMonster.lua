@@ -118,7 +118,7 @@ function ErrorMonster:PLAYER_ENTERING_WORLD()
 	end
 end
 
-function ErrorMonster:Flush(message)
+function ErrorMonster:Flush(message, r, g, b, a)
 	local sink = self.db.profile.sink
 
 	self:TriggerEvent("ErrorMonster_MessageFlushed", message)
@@ -134,32 +134,32 @@ function ErrorMonster:Flush(message)
 	self:TriggerEvent("ErrorMonster_Message", message)
 
 	if sink == "BigWigs" and BigWigs then
-		self:TriggerEvent("BigWigs_Message", message, "Red", false, nil)
+		self:TriggerEvent("BigWigs_Message", message, { r = r, g = g, b = b }, false, false)
 	elseif sink == "Scrolling Combat Text" and SCT and type(SCT.DisplayText) == "function" then
-		SCT:DisplayText(message, { r = 1.0, g = 0.0, b = 0.0 }, nil, "event", 1)
+		SCT:DisplayText(message, { r = r, g = g, b = b }, nil, "event", 1)
 	elseif sink == "Scrolling Combat Text Message" and SCT and type(SCT.DisplayMessage) == "function" then
-		SCT:DisplayMessage(message, { r = 1.0, g = 0.0, b = 0.0 })
+		SCT:DisplayMessage(message, { r = r, g = g, b = b })
 	elseif sink == "MSBT" and MikSBT then
-		MikSBT.DisplayMessage(message, MikSBT.DISPLAYTYPE_NOTIFICATION, false, 255, 0, 0)
+		MikSBT.DisplayMessage(message, MikSBT.DISPLAYTYPE_NOTIFICATION, false, r * 255, g * 255, b * 255)
 	elseif sink == "Blizzard FCT" and CombatText_AddMessage then
-		CombatText_AddMessage(message, COMBAT_TEXT_SCROLL_FUNCTION, 1.0, 0.0, 0.0, "sticky", nil)
+		CombatText_AddMessage(message, COMBAT_TEXT_SCROLL_FUNCTION, r, g, b, "sticky", nil)
 	elseif string.find(sink, "ChatFrame") then
 		local f = getglobal(sink)
 		if f ~= nil and type(f.GetObjectType) == "function" and f:GetObjectType() == "ScrollingMessageFrame" and type(f.AddMessage) == "function" then
-			f:AddMessage(message, 1, 0, 0, "ErrorMonster")
+			f:AddMessage(message, r, g, b, "ErrorMonster")
 		end
 	end
 end
 
 function ErrorMonster:AddMessage(frame, message, r, g, b, a)
 	if self.db.profile.berserk then
-		self:Flush(message)
+		self:Flush(message, r or 1.0, g or 0.1, b or 0.1, a or 1.0)
 		return
 	end
 
 	for key, text in pairs(self.db.char.errorList) do
 		if text and message and message == text then
-			self:Flush(message)
+			self:Flush(message, r or 1.0, g or 0.1, b or 0.1, a or 1.0)
 			return
 		end
 	end
