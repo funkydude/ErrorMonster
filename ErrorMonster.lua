@@ -8,6 +8,10 @@ ErrorMonster = AceLibrary("AceAddon-2.0"):new("AceHook-2.1", "AceConsole-2.0", "
 
 local L = AceLibrary("AceLocale-2.2"):new("ErrorMonster")
 local throttle = nil
+local colors = {
+	["UI_INFO_MESSAGE"] = { r = 1.0, g = 1.0, b = 0.0, a = 1.0 },
+	["UI_ERROR_MESSAGE"] = { r = 1.0, g = 0.1, b = 0.1, a = 1.0 }
+}
 
 function ErrorMonster:OnInitialize()
 	ErrorMonster:RegisterDB("ErrorMonsterDB", "ErrorMonsterDBChar")
@@ -15,6 +19,9 @@ function ErrorMonster:OnInitialize()
 		sink = L["Monster"],
 		throttle = 0,
 		berserk = false,
+		aggroErrors = true,
+		aggroInformation = false,
+		aggroSystem = false,
 	})
 	ErrorMonster:RegisterDefaults("char", {
 		errorList = {
@@ -96,7 +103,34 @@ function ErrorMonster:OnInitialize()
 				desc = L["Go berserk and eat all the errors."],
 				get = function() return ErrorMonster.db.profile.berserk end,
 				set = function(v) ErrorMonster.db.profile.berserk = v end,
-			}
+			},
+			aggro = {
+				name = "aggro", type = "group",
+				desc = L["Teach your ErrorMonster to aggro on other message types."],
+				args = {
+					errors = {
+						name = "error", type = "toggle",
+						desc = L["Error messages."],
+						get = function() return ErrorMonster.db.profile.aggroErrors end,
+						set = function(v) ErrorMonster.db.profile.aggroErrors = v end,
+						map = { [false] = L["|cffff0000Ignore|r"], [true] = L["|cff00ff00Aggro|r"] }
+					},
+					information = {
+						name = "information", type = "toggle",
+						desc = L["Information messages."],
+						get = function() return ErrorMonster.db.profile.aggroInformation end,
+						set = function(v) ErrorMonster.db.profile.aggroInformation = v end,
+						map = { [false] = L["|cffff0000Ignore|r"], [true] = L["|cff00ff00Aggro|r"] }
+					},
+					system = {
+						name = "system", type = "toggle",
+						desc = L["System messages."],
+						get = function() return ErrorMonster.db.profile.aggroSystem end,
+						set = function(v) ErrorMonster.db.profile.aggroSystem = v end,
+						map = { [false] = L["|cffff0000Ignore|r"], [true] = L["|cff00ff00Aggro|r"] }
+					}
+				},
+			},
 		},
 	}
 
@@ -104,9 +138,8 @@ function ErrorMonster:OnInitialize()
 end
 
 function ErrorMonster:OnEnable()
-	self:Hook(UIErrorsFrame, "AddMessage", true)
+	self:Hook("UIErrorsFrame_OnEvent", true)
 	self:RegisterEvent("PLAYER_ENTERING_WORLD")
-	--  CHAT_MSG_SPELL_FAILED_LOCALPLAYER
 end
 
 function ErrorMonster:PLAYER_ENTERING_WORLD()
@@ -151,19 +184,28 @@ function ErrorMonster:Flush(message, r, g, b, a)
 	end
 end
 
-function ErrorMonster:AddMessage(frame, message, r, g, b, a)
+function ErrorMonster:UIErrorsFrame_OnEvent(event, message, r, g, b)
+	if (event == "SYSMSG" and not self.db.profile.aggroSystem) or
+	   (event == "UI_INFO_MESSAGE" and not self.db.profile.aggroInformation) or
+	   (event == "UI_ERROR_MESSAGE" and not self.db.profile.aggroErrors) then
+		self.hooks["UIErrorsFrame_OnEvent"](event, message, r, g, b)
+		return
+	end
+	if event ~= "SYSMSG" then r, g, b = colors[event].r, colors[event].g, colors[event].b end
+
 	if self.db.profile.berserk then
-		self:Flush(message, r or 1.0, g or 0.1, b or 0.1, a or 1.0)
+		self:Flush(message, r or 1.0, g or 0.1, b or 0.1, 1.0)
 		return
 	end
 
 	for key, text in pairs(self.db.char.errorList) do
 		if text and message and message == text then
-			self:Flush(message, r or 1.0, g or 0.1, b or 0.1, a or 1.0)
+			self:Flush(message, r or 1.0, g or 0.1, b or 0.1, 1.0)
 			return
 		end
 	end
-	self.hooks[UIErrorsFrame].AddMessage(frame, message, r, g, b, a)
+
+	self.hooks["UIErrorsFrame_OnEvent"](event, message, r, g, b)
 end
 
 function ErrorMonster:AddFilter(filter)

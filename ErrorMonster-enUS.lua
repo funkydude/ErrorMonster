@@ -13,5 +13,12 @@ L:RegisterTranslations("enUS", function() return {
 	["Monster"] = true,
 	["Throttle errors at the given rate in seconds."] = true,
 	["Go berserk and eat all the errors."] = true,
+	["Teach your ErrorMonster to aggro on other message types."] = true,
+	["Error messages."] = true,
+	["Information messages."] = true,
+	["System messages."] = true,
+	["System messages"] = true,
+	["|cffff0000Ignore|r"] = true,
+	["|cff00ff00Aggro|r"] = true,
 } end)
 
