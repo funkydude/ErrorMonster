@@ -134,7 +134,7 @@ function ErrorMonster:OnInitialize()
 		},
 	}
 
-	self:RegisterChatCommand({"/errormonster", "/errm"}, args)
+	self:RegisterChatCommand({"/errormonster", "/errm"}, args, "ERRORMONSTER")
 end
 
 function ErrorMonster:OnEnable()
