@@ -1,7 +1,7 @@
-## Interface: 11200
+## Interface: 20000
 ## Title: ErrorMonster |cff7fff7f -Ace2-|r
 ## Author: Rabbit
-## Notes: Filters out some of the annoying error messages during combat as a rogue
+## Notes: Filter and redirecter for errors, system messages and information messages.
 ## DefaultState: Enabled
 ## Version: 2
 ## X-Credits: Allara for RogueSpam.
