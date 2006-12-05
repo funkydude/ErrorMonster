@@ -1,8 +1,7 @@
-## Interface: 11200
+## Interface: 20000
 ## Title: ErrorMonster |cff7fff7f -Ace2-|r
 ## Author: Rabbit
 ## Notes: Filter and redirecter for errors, system messages and information messages.
-## DefaultState: Enabled
 ## Version: 2
 ## X-Credits: Allara for RogueSpam.
 ## X-Category: Combat
@@ -12,13 +11,14 @@
 ## OptionalDeps: Ace2
 
 libs\AceLibrary\AceLibrary.lua
-libs\AceOO\AceOO-2.0.lua
-libs\AceEvent\AceEvent-2.0.lua
-libs\AceDB\AceDB-2.0.lua
-libs\AceHook\AceHook-2.1.lua
-libs\AceConsole\AceConsole-2.0.lua
-libs\AceAddon\AceAddon-2.0.lua
-libs\AceLocale\AceLocale-2.2.lua
+libs\AceOO-2.0\AceOO-2.0.lua
+libs\AceEvent-2.0\AceEvent-2.0.lua
+libs\AceDB-2.0\AceDB-2.0.lua
+libs\AceHook-2.1\AceHook-2.1.lua
+libs\AceConsole-2.0\AceConsole-2.0.lua
+libs\AceAddon-2.0\AceAddon-2.0.lua
+libs\AceLocale-2.2\AceLocale-2.2.lua
 
 ErrorMonster-enUS.lua
 ErrorMonster.lua
+
