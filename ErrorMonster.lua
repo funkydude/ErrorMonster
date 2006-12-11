@@ -1,4 +1,4 @@
- --
+﻿ --
 -- ErrorMonster
 -- by Rabbit
 -- originally RogueSpam by Allara
@@ -54,26 +54,26 @@ function ErrorMonster:OnInitialize()
 		type = "group",
 		args = {
 			list = {
-				name = "list", type = "execute",
+				name = L["list"], type = "execute",
 				desc = L["Shows the current filters and their ID."],
 				func = function() self:ListFilters() end,
 			},
 			add = {
-				name  = "add", type = "text",
+				name  = L["add"], type = "text",
 				desc  = L["Adds the given filter to the ignore list."],
 				usage = L["<filter>"],
 				set   = function(text) self:AddFilter(text) end,
 				get   = false,
 			},
 			remove = {
-				name  = "remove", type = "text",
+				name  = L["remove"], type = "text",
 				desc  = L["Removes the given filter or ID from the filter list."],
 				usage = L["<filter>"],
 				set   = function(text) self:RemoveFilter(text) end,
 				get   = false,
 			},
 			sink = {
-				name  = "sink", type = "text",
+				name  = L["sink"], type = "text",
 				desc  = L["Where to flush the messages matched by the filters."],
 				get = function() return ErrorMonster.db.profile.sink end,
 				set = function(v) ErrorMonster.db.profile.sink = v end,
@@ -92,38 +92,38 @@ function ErrorMonster:OnInitialize()
 					end
 			},
 			throttle = {
-				name = "throttle", type = "range",
+				name = L["throttle"], type = "range",
 				desc = L["Throttle errors at the given rate in seconds."],
 				min = 0, max = 10,
 				get = function() return ErrorMonster.db.profile.throttle end,
 				set = function(v) ErrorMonster.db.profile.throttle = v end,
 			},
 			berserk = {
-				name = "berserk", type = "toggle",
+				name = L["berserk"], type = "toggle",
 				desc = L["Go berserk and eat all the errors."],
 				get = function() return ErrorMonster.db.profile.berserk end,
 				set = function(v) ErrorMonster.db.profile.berserk = v end,
 			},
 			aggro = {
-				name = "aggro", type = "group",
+				name = L["aggro"], type = "group",
 				desc = L["Teach your ErrorMonster to aggro on other message types."],
 				args = {
 					errors = {
-						name = "error", type = "toggle",
+						name = L["error"], type = "toggle",
 						desc = L["Error messages."],
 						get = function() return ErrorMonster.db.profile.aggroErrors end,
 						set = function(v) ErrorMonster.db.profile.aggroErrors = v end,
 						map = { [false] = L["|cffff0000Ignore|r"], [true] = L["|cff00ff00Aggro|r"] }
 					},
 					information = {
-						name = "information", type = "toggle",
+						name = L["information"], type = "toggle",
 						desc = L["Information messages."],
 						get = function() return ErrorMonster.db.profile.aggroInformation end,
 						set = function(v) ErrorMonster.db.profile.aggroInformation = v end,
 						map = { [false] = L["|cffff0000Ignore|r"], [true] = L["|cff00ff00Aggro|r"] }
 					},
 					system = {
-						name = "system", type = "toggle",
+						name = L["system"], type = "toggle",
 						desc = L["System messages."],
 						get = function() return ErrorMonster.db.profile.aggroSystem end,
 						set = function(v) ErrorMonster.db.profile.aggroSystem = v end,

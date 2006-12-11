@@ -1,4 +1,4 @@
-local L = AceLibrary("AceLocale-2.2"):new("ErrorMonster")
+﻿local L = AceLibrary("AceLocale-2.2"):new("ErrorMonster")
 
 L:RegisterTranslations("enUS", function() return {
 	["Shows the current filters and their ID."] = true,
@@ -20,5 +20,16 @@ L:RegisterTranslations("enUS", function() return {
 	["System messages"] = true,
 	["|cffff0000Ignore|r"] = true,
 	["|cff00ff00Aggro|r"] = true,
+
+	["list"] = true,
+	["add"] = true,
+	["remove"] = true,
+	["sink"] = true,
+	["throttle"] = true,
+	["berserk"] = true,
+	["aggro"] = true,
+		["error"] = true,
+		["information"] = true,
+		["system"] = true,
 } end)
 
