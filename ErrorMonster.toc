@@ -21,5 +21,6 @@ libs\AceLocale-2.2\AceLocale-2.2.lua
 
 ErrorMonster-enUS.lua
 ErrorMonster-koKR.lua
+ErrorMonster-esES.lua
 ErrorMonster.lua
 
