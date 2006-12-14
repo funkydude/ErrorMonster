@@ -26,7 +26,7 @@ L:RegisterTranslations("esES", function() return {
 	["remove"] = "eliminar",
 	["sink"] = "hundir",
 	["throttle"] = "acelerar",
-	["berserk"] = ""berserk"",
+	["berserk"] = "berserk",
 	["aggro"] = "aggro",
 	["error"] = "error",
 	["information"] = "informaci\195\179n",
