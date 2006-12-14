@@ -2,6 +2,7 @@
 ## Title: ErrorMonster |cff7fff7f -Ace2-|r
 ## Author: Rabbit
 ## Notes: Filter and redirecter for errors, system messages and information messages.
+## Notes-esES: Filtro y redireccionador para errores, mensajes de sistema y mensajes de informaci\195\179n.
 ## Version: 2
 ## X-Credits: Allara for RogueSpam.
 ## X-Category: Combat
@@ -23,4 +24,3 @@ ErrorMonster-enUS.lua
 ErrorMonster-koKR.lua
 ErrorMonster-esES.lua
 ErrorMonster.lua
-
