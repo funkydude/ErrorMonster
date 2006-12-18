@@ -8,6 +8,7 @@
 ## X-Category: Combat
 ## X-eMail: rabbit.magtheridon@gmail.com
 ## X-Website: http://www.wowace.com
+## X-License: CC-BY-NC-SA-2.5
 ## SavedVariables: ErrorMonsterDB, ErrorMonsterDBChar
 ## OptionalDeps: Ace2
 
