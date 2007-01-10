@@ -1,4 +1,4 @@
-﻿## Interface: 20000
+﻿## Interface: 20003
 ## Title: ErrorMonster |cff7fff7f -Ace2-|r
 ## Author: Rabbit
 ## Notes: Filter and redirecter for errors, system messages and information messages.
