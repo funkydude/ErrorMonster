@@ -6,6 +6,8 @@
 
 ErrorMonster = AceLibrary("AceAddon-2.0"):new("AceHook-2.1", "AceConsole-2.0", "AceDB-2.0", "AceEvent-2.0")
 
+local _G = getfenv(0)
+
 local L = AceLibrary("AceLocale-2.2"):new("ErrorMonster")
 local throttle = nil
 local colors = {
@@ -143,7 +145,7 @@ function ErrorMonster:OnEnable()
 end
 
 function ErrorMonster:PLAYER_ENTERING_WORLD()
-	if throttle ~= nil then
+	if type(throttle) == "table" then
 		for i in pairs(throttle) do
 			throttle[i] = nil
 		end
@@ -177,8 +179,8 @@ function ErrorMonster:Flush(message, r, g, b, a)
 	elseif sink == "Blizzard FCT" and CombatText_AddMessage then
 		CombatText_AddMessage(message, COMBAT_TEXT_SCROLL_FUNCTION, r, g, b, "sticky", nil)
 	elseif string.find(sink, "ChatFrame") then
-		local f = getglobal(sink)
-		if f ~= nil and type(f.GetObjectType) == "function" and f:GetObjectType() == "ScrollingMessageFrame" and type(f.AddMessage) == "function" then
+		local f = _G[sink]
+		if type(f) == "table" and type(f.GetObjectType) == "function" and f:GetObjectType() == "ScrollingMessageFrame" and type(f.AddMessage) == "function" then
 			f:AddMessage(message, r, g, b, "ErrorMonster")
 		end
 	end
@@ -209,6 +211,10 @@ function ErrorMonster:UIErrorsFrame_OnEvent(event, message, r, g, b)
 end
 
 function ErrorMonster:AddFilter(filter)
+	if type(_G[filter]) == "string" then
+		filter = _G[filter]
+	end
+
 	self:Print(L["Adding filter: "]..filter)
 	table.insert(self.db.char.errorList, filter)
 end
