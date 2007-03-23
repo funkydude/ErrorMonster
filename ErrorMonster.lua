@@ -58,20 +58,20 @@ function ErrorMonster:OnInitialize()
 			list = {
 				name = L["list"], type = "execute",
 				desc = L["Shows the current filters and their ID."],
-				func = function() self:ListFilters() end,
+				func = "ListFilters",
 			},
 			add = {
 				name  = L["add"], type = "text",
 				desc  = L["Adds the given filter to the ignore list."],
 				usage = L["<filter>"],
-				set   = function(text) self:AddFilter(text) end,
+				set   = "AddFilter",
 				get   = false,
 			},
 			remove = {
 				name  = L["remove"], type = "text",
 				desc  = L["Removes the given filter or ID from the filter list."],
 				usage = L["<filter>"],
-				set   = function(text) self:RemoveFilter(text) end,
+				set   = "RemoveFilter",
 				get   = false,
 			},
 			sink = {
@@ -81,7 +81,7 @@ function ErrorMonster:OnInitialize()
 				set = function(v) ErrorMonster.db.profile.sink = v end,
 				usage = "<"..L["Monster"]..", BigWigs, Scrolling Combat Text, Scrolling Combat Text Message, MSBT, Blizzard FCT or ChatFrame1-10>",
 				validate = function(input)
-					local _,_,x = string.find(input, "ChatFrame(%d+)")
+					local x = select(3, input:find("ChatFrame(%d+)"))
 					if x ~= nil and tonumber(x) ~= nil then
 						return tonumber(x) > 0 and tonumber(x) < 11
 					end
@@ -109,26 +109,27 @@ function ErrorMonster:OnInitialize()
 			aggro = {
 				name = L["aggro"], type = "group",
 				desc = L["Teach your ErrorMonster to aggro on other message types."],
+				pass = true,
+				get = function(key)
+					return ErrorMonster.db.profile[key]
+				end,
+				set = function(key, value)
+					ErrorMonster.db.profile[key] = value
+				end,
 				args = {
-					errors = {
+					aggroErrors = {
 						name = L["error"], type = "toggle",
 						desc = L["Error messages."],
-						get = function() return ErrorMonster.db.profile.aggroErrors end,
-						set = function(v) ErrorMonster.db.profile.aggroErrors = v end,
 						map = { [false] = L["|cffff0000Ignore|r"], [true] = L["|cff00ff00Aggro|r"] }
 					},
-					information = {
+					aggroInformation = {
 						name = L["information"], type = "toggle",
 						desc = L["Information messages."],
-						get = function() return ErrorMonster.db.profile.aggroInformation end,
-						set = function(v) ErrorMonster.db.profile.aggroInformation = v end,
 						map = { [false] = L["|cffff0000Ignore|r"], [true] = L["|cff00ff00Aggro|r"] }
 					},
-					system = {
+					aggroSystem = {
 						name = L["system"], type = "toggle",
 						desc = L["System messages."],
-						get = function() return ErrorMonster.db.profile.aggroSystem end,
-						set = function(v) ErrorMonster.db.profile.aggroSystem = v end,
 						map = { [false] = L["|cffff0000Ignore|r"], [true] = L["|cff00ff00Aggro|r"] }
 					}
 				},
@@ -178,7 +179,7 @@ function ErrorMonster:Flush(message, r, g, b, a)
 		MikSBT.DisplayMessage(message, MikSBT.DISPLAYTYPE_NOTIFICATION, false, r * 255, g * 255, b * 255)
 	elseif sink == "Blizzard FCT" and CombatText_AddMessage then
 		CombatText_AddMessage(message, COMBAT_TEXT_SCROLL_FUNCTION, r, g, b, "sticky", nil)
-	elseif string.find(sink, "ChatFrame") then
+	elseif sink:find("ChatFrame") then
 		local f = _G[sink]
 		if type(f) == "table" and type(f.GetObjectType) == "function" and f:GetObjectType() == "ScrollingMessageFrame" and type(f.AddMessage) == "function" then
 			f:AddMessage(message, r, g, b, "ErrorMonster")
