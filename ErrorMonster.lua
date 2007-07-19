@@ -79,7 +79,7 @@ function ErrorMonster:OnInitialize()
 				desc  = L["Where to flush the messages matched by the filters."],
 				get = function() return ErrorMonster.db.profile.sink end,
 				set = function(v) ErrorMonster.db.profile.sink = v end,
-				usage = "<"..L["Monster"]..", BigWigs, Scrolling Combat Text, Scrolling Combat Text Message, MSBT, Blizzard FCT or ChatFrame1-10>",
+				usage = "<"..L["Monster"]..", Parrot, BigWigs, Scrolling Combat Text, Scrolling Combat Text Message, MSBT, Blizzard FCT or ChatFrame1-10>",
 				validate = function(input)
 					local x = select(3, input:find("ChatFrame(%d+)"))
 					if x ~= nil and tonumber(x) ~= nil then
@@ -90,7 +90,8 @@ function ErrorMonster:OnInitialize()
 							input == "Scrolling Combat Text" or
 							input == "Scrolling Combat Text Message" or
 							input == "MSBT" or
-							input == "Blizzard FCT"
+							input == "Blizzard FCT" or
+							input == "Parrot"
 					end
 			},
 			throttle = {
@@ -136,8 +137,7 @@ function ErrorMonster:OnInitialize()
 			},
 		},
 	}
-
-	self:RegisterChatCommand({"/errormonster", "/errm"}, args, "ERRORMONSTER")
+	self:RegisterChatCommand("/errormonster", "/errm", args, "ERRORMONSTER")
 end
 
 function ErrorMonster:OnEnable()
@@ -179,6 +179,8 @@ function ErrorMonster:Flush(message, r, g, b, a)
 		MikSBT.DisplayMessage(message, MikSBT.DISPLAYTYPE_NOTIFICATION, false, r * 255, g * 255, b * 255)
 	elseif sink == "Blizzard FCT" and CombatText_AddMessage then
 		CombatText_AddMessage(message, COMBAT_TEXT_SCROLL_FUNCTION, r, g, b, "sticky", nil)
+	elseif sink == "Parrot" and Parrot then
+		Parrot:ShowMessage(message, "Notification", false, string.format("%02x%02x%02x", r * 255, g * 255, b * 255))
 	elseif sink:find("ChatFrame") then
 		local f = _G[sink]
 		if type(f) == "table" and type(f.GetObjectType) == "function" and f:GetObjectType() == "ScrollingMessageFrame" and type(f.AddMessage) == "function" then
