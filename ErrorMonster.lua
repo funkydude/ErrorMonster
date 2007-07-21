@@ -180,7 +180,7 @@ function ErrorMonster:Flush(message, r, g, b, a)
 	elseif sink == "Blizzard FCT" and CombatText_AddMessage then
 		CombatText_AddMessage(message, COMBAT_TEXT_SCROLL_FUNCTION, r, g, b, "sticky", nil)
 	elseif sink == "Parrot" and Parrot then
-		Parrot:ShowMessage(message, "Notification", false, string.format("%02x%02x%02x", r * 255, g * 255, b * 255))
+		Parrot:ShowMessage(message, "Notification", false, r, g, b)
 	elseif sink:find("ChatFrame") then
 		local f = _G[sink]
 		if type(f) == "table" and type(f.GetObjectType) == "function" and f:GetObjectType() == "ScrollingMessageFrame" and type(f.AddMessage) == "function" then
