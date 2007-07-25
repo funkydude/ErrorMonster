@@ -4,7 +4,7 @@
 -- originally RogueSpam by Allara
 --
 
-ErrorMonster = AceLibrary("AceAddon-2.0"):new("AceHook-2.1", "AceConsole-2.0", "AceDB-2.0", "AceEvent-2.0")
+ErrorMonster = AceLibrary("AceAddon-2.0"):new("AceHook-2.1", "AceConsole-2.0", "AceDB-2.0", "AceEvent-2.0", "Sink-1.0")
 
 local _G = getfenv(0)
 
@@ -18,7 +18,7 @@ local colors = {
 function ErrorMonster:OnInitialize()
 	ErrorMonster:RegisterDB("ErrorMonsterDB", "ErrorMonsterDBChar")
 	ErrorMonster:RegisterDefaults("profile", {
-		sink = L["Monster"],
+		sink10OutputSink = "None",
 		throttle = 0,
 		berserk = false,
 		aggroErrors = true,
@@ -73,26 +73,6 @@ function ErrorMonster:OnInitialize()
 				usage = L["<filter>"],
 				set   = "RemoveFilter",
 				get   = false,
-			},
-			sink = {
-				name  = L["sink"], type = "text",
-				desc  = L["Where to flush the messages matched by the filters."],
-				get = function() return ErrorMonster.db.profile.sink end,
-				set = function(v) ErrorMonster.db.profile.sink = v end,
-				usage = "<"..L["Monster"]..", Parrot, BigWigs, Scrolling Combat Text, Scrolling Combat Text Message, MSBT, Blizzard FCT or ChatFrame1-10>",
-				validate = function(input)
-					local x = select(3, input:find("ChatFrame(%d+)"))
-					if x ~= nil and tonumber(x) ~= nil then
-						return tonumber(x) > 0 and tonumber(x) < 11
-					end
-					return	input == L["Monster"] or
-							input == "BigWigs" or
-							input == "Scrolling Combat Text" or
-							input == "Scrolling Combat Text Message" or
-							input == "MSBT" or
-							input == "Blizzard FCT" or
-							input == "Parrot"
-					end
 			},
 			throttle = {
 				name = L["throttle"], type = "range",
@@ -155,11 +135,11 @@ function ErrorMonster:PLAYER_ENTERING_WORLD()
 end
 
 function ErrorMonster:Flush(message, r, g, b, a)
-	local sink = self.db.profile.sink
+	local sink = self.db.profile.sink10OutputSink
 
 	self:TriggerEvent("ErrorMonster_MessageFlushed", message)
 
-	if sink == L["Monster"] then return end -- Default, eat it!
+	if sink == "None" then return end -- Default, eat it!
 
 	if self.db.profile.throttle > 0 then
 		if throttle == nil then throttle = {} end
@@ -168,25 +148,7 @@ function ErrorMonster:Flush(message, r, g, b, a)
 	end
 
 	self:TriggerEvent("ErrorMonster_Message", message)
-
-	if sink == "BigWigs" and BigWigs then
-		self:TriggerEvent("BigWigs_Message", message, { r = r, g = g, b = b }, false, false)
-	elseif sink == "Scrolling Combat Text" and SCT and type(SCT.DisplayText) == "function" then
-		SCT:DisplayText(message, { r = r, g = g, b = b }, nil, "event", 1)
-	elseif sink == "Scrolling Combat Text Message" and SCT and type(SCT.DisplayMessage) == "function" then
-		SCT:DisplayMessage(message, { r = r, g = g, b = b })
-	elseif sink == "MSBT" and MikSBT then
-		MikSBT.DisplayMessage(message, MikSBT.DISPLAYTYPE_NOTIFICATION, false, r * 255, g * 255, b * 255)
-	elseif sink == "Blizzard FCT" and CombatText_AddMessage then
-		CombatText_AddMessage(message, COMBAT_TEXT_SCROLL_FUNCTION, r, g, b, "sticky", nil)
-	elseif sink == "Parrot" and Parrot then
-		Parrot:ShowMessage(message, "Notification", false, r, g, b)
-	elseif sink:find("ChatFrame") then
-		local f = _G[sink]
-		if type(f) == "table" and type(f.GetObjectType) == "function" and f:GetObjectType() == "ScrollingMessageFrame" and type(f.AddMessage) == "function" then
-			f:AddMessage(message, r, g, b, "ErrorMonster")
-		end
-	end
+	self:Pour(message, r, g, b)
 end
 
 function ErrorMonster:UIErrorsFrame_OnEvent(event, message, r, g, b)
