@@ -4,21 +4,23 @@
 -- originally RogueSpam by Allara
 --
 
-ErrorMonster = AceLibrary("AceAddon-2.0"):new("AceHook-2.1", "AceConsole-2.0", "AceDB-2.0", "AceEvent-2.0", "Sink-1.0")
+ErrorMonster = AceLibrary("AceAddon-2.0"):new("AceHook-2.1", "AceConsole-2.0", "AceDB-2.0", "AceEvent-2.0")
+local sink = LibStub("LibSink-2.0")
+sink:Embed(ErrorMonster)
 
 local _G = getfenv(0)
 
 local L = AceLibrary("AceLocale-2.2"):new("ErrorMonster")
 local throttle = nil
 local colors = {
-	["UI_INFO_MESSAGE"] = { r = 1.0, g = 1.0, b = 0.0, a = 1.0 },
-	["UI_ERROR_MESSAGE"] = { r = 1.0, g = 0.1, b = 0.1, a = 1.0 }
+	UI_INFO_MESSAGE = { r = 1.0, g = 1.0, b = 0.0, a = 1.0 },
+	UI_ERROR_MESSAGE = { r = 1.0, g = 0.1, b = 0.1, a = 1.0 }
 }
 
 function ErrorMonster:OnInitialize()
 	ErrorMonster:RegisterDB("ErrorMonsterDB", "ErrorMonsterDBChar")
 	ErrorMonster:RegisterDefaults("profile", {
-		sink10OutputSink = "None",
+		sink20OutputSink = "None",
 		throttle = 0,
 		berserk = false,
 		aggroErrors = true,
@@ -117,7 +119,8 @@ function ErrorMonster:OnInitialize()
 			},
 		},
 	}
-	self:RegisterChatCommand("/errormonster", "/errm", args, "ERRORMONSTER")
+	args.args.output = self:GetSinkAce2OptionsDataTable().output
+	self:RegisterChatCommand("/errormonster", args, "ERRORMONSTER")
 end
 
 function ErrorMonster:OnEnable()
@@ -135,7 +138,7 @@ function ErrorMonster:PLAYER_ENTERING_WORLD()
 end
 
 function ErrorMonster:Flush(message, r, g, b, a)
-	local sink = self.db.profile.sink10OutputSink
+	local sink = self.db.profile.sink20OutputSink
 
 	self:TriggerEvent("ErrorMonster_MessageFlushed", message)
 

@@ -11,7 +11,7 @@
 ## X-Website: http://www.wowace.com
 ## X-License: CC-BY-NC-SA-2.5
 ## SavedVariables: ErrorMonsterDB, ErrorMonsterDBChar
-## OptionalDeps: Ace2
+## OptionalDeps: Ace2, LibSink-2.0
 
 embeds.xml
 
