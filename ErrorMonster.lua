@@ -119,6 +119,7 @@ function ErrorMonster:OnInitialize()
 			},
 		},
 	}
+	self:SetSinkStorage(self.db.profile)
 	args.args.output = self:GetSinkAce2OptionsDataTable().output
 	self:RegisterChatCommand("/errormonster", args, "ERRORMONSTER")
 end
