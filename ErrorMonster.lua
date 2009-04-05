@@ -1,13 +1,7 @@
-﻿ --
--- ErrorMonster
--- by Rabbit
--- originally RogueSpam by Allara
---
-
 local L = LibStub("AceLocale-3.0"):GetLocale("ErrorMonster")
 ErrorMonster = CreateFrame("Frame")
 local addon = ErrorMonster
-LibStub("LibSink-2.0"):Embed(ErrorMonster)
+LibStub("LibSink-2.0"):Embed(addon)
 
 local throttle = {}
 local colors = {
@@ -60,6 +54,7 @@ addon:SetScript("OnEvent", function(self, event, addon)
 					type = "description",
 					name = L["addon_desc"],
 					order = 1,
+					fontSize = "medium",
 				},
 				errors = {
 					type = "toggle",
