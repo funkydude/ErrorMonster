@@ -1,4 +1,4 @@
-## Interface: 30000
+## Interface: 30100
 ## Title: ErrorMonster
 ## Author: Rabbit
 ## Notes: Filter and redirecter for errors, system messages and information messages.
@@ -22,3 +22,4 @@ ErrorMonster-zhCN.lua
 ErrorMonster-zhTW.lua
 
 ErrorMonster.lua
+

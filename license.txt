@@ -1,4 +1,4 @@
-ErrorMonster is copyrighted 2006 by Rabbit.
+ErrorMonster is copyrighted 2009 by Rabbit.
 
 This addon is distributed under the terms of the Creative Commons
 Attribution-NonCommercial-ShareAlike 2.0 license.
