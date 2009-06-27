@@ -99,7 +99,7 @@ addon:SetScript("OnEvent", function(self, event, addon)
 		LibStub("AceConfigDialog-3.0"):AddToBlizOptions("ErrorMonster", "ErrorMonster")
 		LibStub("AceConfigDialog-3.0"):AddToBlizOptions("ErrorMonster-Output", L["Output"], "ErrorMonster")
 	elseif event == "PLAYER_ENTERING_WORLD" then
-		for i in pairs(throttle) do throttle[i] = nil end
+		wipe(throttle)
 	end
 end)
 
