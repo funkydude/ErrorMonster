@@ -42,7 +42,7 @@ addon:SetScript("OnEvent", function(self, event, addon)
 				system = false,
 				combat = false,
 			},
-		}, "Default")
+		}, true)
 
 		local args = {
 			type = "group",
