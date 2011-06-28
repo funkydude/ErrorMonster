@@ -1,4 +1,4 @@
-## Interface: 40000
+## Interface: 40200
 ## Title: ErrorMonster
 ## Author: Rabbit
 ## Notes: Redirecter for errors, system messages and information messages.
