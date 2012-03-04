@@ -5,17 +5,9 @@ LibStub("LibSink-2.0"):Embed(addon)
 
 local throttle = {}
 local colors = {
-	UI_INFO_MESSAGE = { r = 1.0, g = 1.0, b = 0.0, a = 1.0 },
-	UI_ERROR_MESSAGE = { r = 1.0, g = 0.1, b = 0.1, a = 1.0 },
+	UI_INFO_MESSAGE = { r = 1.0, g = 1.0, b = 0.0 },
+	UI_ERROR_MESSAGE = { r = 1.0, g = 0.1, b = 0.1 },
 }
-
-local function flush(message, r, g, b, a)
-	if addon.db.profile.sink20OutputSink == "None" then return end
-	if addon.db.profile.combat and InCombatLockdown() then return end
-	if throttle[message] and (throttle[message] + 10 > GetTime()) then return end
-	throttle[message] = GetTime()
-	addon:Pour(message, r, g, b)
-end
 
 local map = {
 	SYSMSG = "system",
@@ -25,8 +17,12 @@ local map = {
 local originalOnEvent = UIErrorsFrame:GetScript("OnEvent")
 UIErrorsFrame:SetScript("OnEvent", function(self, event, message, r, g, b, ...)
 	if addon.db.profile[map[event]] then
+		if addon.db.profile.sink20OutputSink == "None" then return end
+		if addon.db.profile.combat and InCombatLockdown() then return end
+		if throttle[message] and (throttle[message] + 10 > GetTime()) then return end
 		if event ~= "SYSMSG" then r, g, b = colors[event].r, colors[event].g, colors[event].b end
-		flush(message, r or 1.0, g or 0.1, b or 0.1, 1.0)
+		throttle[message] = GetTime()
+		addon:Pour(message, r or 1.0, g or 0.1, b or 0.1)
 	else
 		return originalOnEvent(self, event, message, r, g, b, ...)
 	end
