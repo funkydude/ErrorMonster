@@ -1,12 +1,10 @@
-## Interface: 40200
+## Interface: 50400
 ## Title: ErrorMonster
 ## Author: Rabbit
 ## Notes: Redirecter for errors, system messages and information messages.
 ## Version: 3
 ## X-Credits: Allara for RogueSpam.
 ## X-Category: Combat
-## X-eMail: rabbit.magtheridon@gmail.com
-## X-Website: http://www.wowace.com
 ## X-License: CC-BY-NC-SA-3.0
 ## SavedVariables: ErrorMonsterDB
 ## OptionalDeps: Ace3, LibSink-2.0
