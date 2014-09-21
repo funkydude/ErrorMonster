@@ -1,8 +1,8 @@
 ## Interface: 50400
 ## Title: ErrorMonster
-## Author: Rabbit
+## Author: Funkydude
 ## Notes: Redirecter for errors, system messages and information messages.
-## X-Credits: Allara for RogueSpam.
+## X-Credits: Allara, Rabbit
 ## X-Category: Combat
 ## X-License: All Rights Reserved
 ## SavedVariables: ErrorMonsterDB
