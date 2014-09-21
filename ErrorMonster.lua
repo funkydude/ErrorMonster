@@ -1,6 +1,6 @@
-local L = LibStub("AceLocale-3.0"):GetLocale("ErrorMonster")
-ErrorMonster = CreateFrame("Frame")
-local addon = ErrorMonster
+local _, addon = ...
+local frame = CreateFrame("Frame")
+local L = addon.L
 LibStub("LibSink-2.0"):Embed(addon)
 
 local throttle = {}
@@ -17,9 +17,7 @@ local map = {
 local originalOnEvent = UIErrorsFrame:GetScript("OnEvent")
 UIErrorsFrame:SetScript("OnEvent", function(self, event, message, r, g, b, ...)
 	if addon.db.profile[map[event]] then
-		if addon.db.profile.sink20OutputSink == "None" then return end
-		if addon.db.profile.combat and InCombatLockdown() then return end
-		if throttle[message] and (throttle[message] + 10 > GetTime()) then return end
+		if addon.db.profile.sink20OutputSink == "None" or (addon.db.profile.combat and InCombatLockdown()) or (throttle[message] and (throttle[message] + 10 > GetTime())) then return end
 		if event ~= "SYSMSG" then r, g, b = colors[event].r, colors[event].g, colors[event].b end
 		throttle[message] = GetTime()
 		addon:Pour(message, r or 1.0, g or 0.1, b or 0.1)
@@ -28,9 +26,9 @@ UIErrorsFrame:SetScript("OnEvent", function(self, event, message, r, g, b, ...)
 	end
 end)
 
-addon:SetScript("OnEvent", function(self, event, addon)
-	if event == "ADDON_LOADED" and addon == "ErrorMonster" then
-		self.db = LibStub("AceDB-3.0"):New("ErrorMonsterDB", {
+frame:SetScript("OnEvent", function(self, event, addonName)
+	if addonName == "ErrorMonster" then
+		addon.db = LibStub("AceDB-3.0"):New("ErrorMonsterDB", {
 			profile = {
 				sink20OutputSink = "UIErrorsFrame",
 				errors = true,
@@ -42,34 +40,34 @@ addon:SetScript("OnEvent", function(self, event, addon)
 
 		local args = {
 			type = "group",
-			handler = self,
-			get = function(info) return self.db.profile[info[1]] end,
-			set = function(info, v) self.db.profile[info[1]] = v end,
+			handler = addon,
+			get = function(info) return addon.db.profile[info[1]] end,
+			set = function(info, v) addon.db.profile[info[1]] = v end,
 			args = {
 				desc = {
 					type = "description",
-					name = L["addon_desc"],
+					name = L.addon_desc1.."\n\n"..L.addon_desc2.."\n\n"..L.addon_desc3.."\n\n",
 					order = 1,
 					fontSize = "medium",
 				},
 				errors = {
 					type = "toggle",
-					name = L["Error"],
-					desc = L["Error messages."],
+					name = L.error,
+					desc = L.error_desc,
 					order = 2,
 					width = "full",
 				},
 				information = {
 					type = "toggle",
-					name = L["Information"],
-					desc = L["Information messages."],
+					name = L.information,
+					desc = L.information_desc,
 					order = 3,
 					width = "full",
 				},
 				system = {
 					type = "toggle",
-					name = L["System"],
-					desc = L["System messages."],
+					name = L.system,
+					desc = L.system_desc,
 					order = 4,
 					width = "full",
 				},
@@ -80,25 +78,26 @@ addon:SetScript("OnEvent", function(self, event, addon)
 				},
 				combat = {
 					type = "toggle",
-					name = L["Hide all messages in combat"],
-					desc = L["Hides all the intercepted messages while you are in combat."],
+					name = L.combat,
+					desc = L.combat_desc,
 					order = 20,
 					width = "full",
 				},
 			},
 		}
-		self:SetSinkStorage(self.db.profile)
-		local output = self:GetSinkAce3OptionsDataTable()
+		addon:SetSinkStorage(addon.db.profile)
+		local output = addon:GetSinkAce3OptionsDataTable()
 
-		LibStub("AceConfig-3.0"):RegisterOptionsTable("ErrorMonster", args)
-		LibStub("AceConfig-3.0"):RegisterOptionsTable("ErrorMonster-Output", output)
+		LibStub("AceConfigRegistry-3.0"):RegisterOptionsTable("ErrorMonster", args)
+		LibStub("AceConfigRegistry-3.0"):RegisterOptionsTable("ErrorMonster-Output", output)
 		LibStub("AceConfigDialog-3.0"):AddToBlizOptions("ErrorMonster", "ErrorMonster")
-		LibStub("AceConfigDialog-3.0"):AddToBlizOptions("ErrorMonster-Output", L["Output"], "ErrorMonster")
-	elseif event == "PLAYER_ENTERING_WORLD" then
-		wipe(throttle)
+		LibStub("AceConfigDialog-3.0"):AddToBlizOptions("ErrorMonster-Output", L.output, "ErrorMonster")
+
+		self:UnregisterEvent("ADDON_LOADED")
+		self:SetScript("OnEvent", function() wipe(throttle) end)
+		self:RegisterEvent("PLAYER_ENTERING_WORLD")
 	end
 end)
 
-addon:RegisterEvent("ADDON_LOADED")
-addon:RegisterEvent("PLAYER_ENTERING_WORLD")
+frame:RegisterEvent("ADDON_LOADED")
 
