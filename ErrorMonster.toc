@@ -1,5 +1,4 @@
-## Interface: 60000
-## Title: ErrorMonster
+## Interface: 60100
 ## Author: Funkydude
 ## Notes: Redirecter for errors, system messages and information messages.
 ## X-Credits: Allara, Rabbit
