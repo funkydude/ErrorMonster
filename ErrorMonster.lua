@@ -15,14 +15,20 @@ local map = {
 	UI_ERROR_MESSAGE = "errors",
 }
 local originalOnEvent = UIErrorsFrame:GetScript("OnEvent")
-UIErrorsFrame:SetScript("OnEvent", function(self, event, message, r, g, b, ...)
+UIErrorsFrame:SetScript("OnEvent", function(self, event, ...)
 	if addon.db.profile[map[event]] then
+		local messageType, message, r, g, b
+		if event == "SYSMSG" then
+			message, r, g, b = ...
+		else
+			messageType, message = ...
+		end
 		if addon.db.profile.sink20OutputSink == "None" or (addon.db.profile.combat and InCombatLockdown()) or (throttle[message] and (throttle[message] + 7 > GetTime())) then return end
 		if event ~= "SYSMSG" then r, g, b = colors[event].r, colors[event].g, colors[event].b end
 		throttle[message] = GetTime()
 		addon:Pour(message, r or 1.0, g or 0.1, b or 0.1)
 	else
-		return originalOnEvent(self, event, message, r, g, b, ...)
+		return originalOnEvent(self, event, ...)
 	end
 end)
 
