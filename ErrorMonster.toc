@@ -1,4 +1,4 @@
-## Interface: 60200
+## Interface: 70000
 ## Author: Funkydude
 ## Notes: Redirecter for errors, system messages and information messages.
 ## X-Credits: Allara, Rabbit
