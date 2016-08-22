@@ -92,10 +92,9 @@ frame:SetScript("OnEvent", function(self, event, addonName)
 			},
 		}
 		addon:SetSinkStorage(addon.db.profile)
-		local output = addon:GetSinkAce3OptionsDataTable()
 
 		LibStub("AceConfigRegistry-3.0"):RegisterOptionsTable("ErrorMonster", args)
-		LibStub("AceConfigRegistry-3.0"):RegisterOptionsTable("ErrorMonster-Output", output)
+		LibStub("AceConfigRegistry-3.0"):RegisterOptionsTable("ErrorMonster-Output", function() return addon:GetSinkAce3OptionsDataTable() end)
 		LibStub("AceConfigDialog-3.0"):AddToBlizOptions("ErrorMonster", "ErrorMonster")
 		LibStub("AceConfigDialog-3.0"):AddToBlizOptions("ErrorMonster-Output", L.output, "ErrorMonster")
 
