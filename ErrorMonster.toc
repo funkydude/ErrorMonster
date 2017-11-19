@@ -1,9 +1,22 @@
-## Interface: 70100
+## Interface: 70300
+## Version: @project-version@
 ## Author: Funkydude
-## Notes: Redirecter for errors, system messages and information messages.
+## Notes: Redirect character errors, system messages and information messages.
+## Notes-deDE: Redirect character errors, system messages and information messages.
+## Notes-ruRU: Redirect character errors, system messages and information messages.
+## Notes-zhCN: Redirect character errors, system messages and information messages.
+## Notes-zhTW: Redirect character errors, system messages and information messages.
+## Notes-koKR: Redirect character errors, system messages and information messages.
+## Notes-frFR: Redirect character errors, system messages and information messages.
+## Notes-esES: Redirect character errors, system messages and information messages.
+## Notes-esMX: Redirect character errors, system messages and information messages.
+## Notes-itIT: Redirect character errors, system messages and information messages.
+## Notes-ptBR: Redirect character errors, system messages and information messages.
 ## X-Credits: Allara, Rabbit
 ## X-Category: Combat
-## X-License: All Rights Reserved
+## X-License: All Rights Reserved: You are free to fork and modify on GitHub, please ask us about anything else.
+## X-Curse-Project-ID: 3367
+## X-WoWI-ID: 5949
 ## SavedVariables: ErrorMonsterDB
 ## OptionalDeps: Ace3, LibSink-2.0
 
