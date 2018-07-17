@@ -1,4 +1,5 @@
 package-as: ErrorMonster
+wowi-archive-previous: no
 
 externals:
     Libs/AceDB-3.0: https://repos.wowace.com/wow/ace3/trunk/AceDB-3.0
