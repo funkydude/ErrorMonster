@@ -7,4 +7,4 @@
 * Throttle specific types (Error, Info, System)
 
 ## Download
-https://www.curseforge.com/wow/addons/error-monster
+<https://www.curseforge.com/wow/addons/error-monster>
