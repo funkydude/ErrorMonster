@@ -1,4 +1,4 @@
-## Interface: 90002
+## Interface: 90005
 ## Version: @project-version@
 ## Author: Funkydude
 ## Notes: Redirect character errors, system messages and information messages.
