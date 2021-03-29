@@ -4,33 +4,44 @@ local L = addon.L
 LibStub("LibSink-2.0"):Embed(addon)
 
 local throttle = {}
-local colors = {
-	UI_INFO_MESSAGE = { r = 1.0, g = 1.0, b = 0.0 },
-	UI_ERROR_MESSAGE = { r = 1.0, g = 0.1, b = 0.1 },
-}
 
-local map = {
-	SYSMSG = "system",
-	UI_INFO_MESSAGE = "information",
-	UI_ERROR_MESSAGE = "errors",
-}
-local originalOnEvent = UIErrorsFrame:GetScript("OnEvent")
-UIErrorsFrame:SetScript("OnEvent", function(self, event, ...)
-	if addon.db.profile[map[event]] then
-		local messageType, message, r, g, b
-		if event == "SYSMSG" then
-			message, r, g, b = ...
+do
+	local colors = {
+		UI_INFO_MESSAGE = { r = 1.0, g = 1.0, b = 0.0 },
+		UI_ERROR_MESSAGE = { r = 1.0, g = 0.1, b = 0.1 },
+	}
+	local map = {
+		SYSMSG = "system",
+		UI_INFO_MESSAGE = "information",
+		UI_ERROR_MESSAGE = "errors",
+	}
+	local originalOnEvent = UIErrorsFrame:GetScript("OnEvent")
+	local GetGameMessageInfo, PlayVocalErrorSoundID, PlaySound = GetGameMessageInfo, PlayVocalErrorSoundID, PlaySound
+	UIErrorsFrame:SetScript("OnEvent", function(self, event, ...)
+		if addon.db.profile[map[event]] then
+			local messageType, message, r, g, b
+			if event == "SYSMSG" then
+				message, r, g, b = ...
+			else
+				messageType, message = ...
+			end
+			if addon.db.profile.sink20OutputSink == "None" or (addon.db.profile.combat and InCombatLockdown()) or (throttle[message] and (throttle[message] + 7 > GetTime())) then return end
+			if event ~= "SYSMSG" then
+				r, g, b = colors[event].r, colors[event].g, colors[event].b
+				local _, soundKitID, voiceID = GetGameMessageInfo(messageType)
+				if voiceID then
+					PlayVocalErrorSoundID(voiceID)
+				elseif soundKitID then
+					PlaySound(soundKitID)
+				end
+			end
+			throttle[message] = GetTime()
+			addon:Pour(message, r or 1.0, g or 0.1, b or 0.1)
 		else
-			messageType, message = ...
+			return originalOnEvent(self, event, ...)
 		end
-		if addon.db.profile.sink20OutputSink == "None" or (addon.db.profile.combat and InCombatLockdown()) or (throttle[message] and (throttle[message] + 7 > GetTime())) then return end
-		if event ~= "SYSMSG" then r, g, b = colors[event].r, colors[event].g, colors[event].b end
-		throttle[message] = GetTime()
-		addon:Pour(message, r or 1.0, g or 0.1, b or 0.1)
-	else
-		return originalOnEvent(self, event, ...)
-	end
-end)
+	end)
+end
 
 frame:SetScript("OnEvent", function(self, event, addonName)
 	if addonName == "ErrorMonster" then
@@ -99,7 +110,7 @@ frame:SetScript("OnEvent", function(self, event, addonName)
 		LibStub("AceConfigDialog-3.0"):AddToBlizOptions("ErrorMonster-Output", L.output, "ErrorMonster")
 
 		self:UnregisterEvent("ADDON_LOADED")
-		self:SetScript("OnEvent", function() wipe(throttle) end)
+		self:SetScript("OnEvent", function() throttle = {} end)
 		self:RegisterEvent("PLAYER_ENTERING_WORLD")
 	end
 end)
