@@ -109,7 +109,7 @@ frame:SetScript("OnEvent", function(self, event, addonName)
 		LibStub("AceConfigDialog-3.0"):AddToBlizOptions("ErrorMonster", "ErrorMonster")
 		LibStub("AceConfigDialog-3.0"):AddToBlizOptions("ErrorMonster-Output", L.output, "ErrorMonster")
 
-		self:UnregisterEvent("ADDON_LOADED")
+		self:UnregisterEvent(event)
 		self:SetScript("OnEvent", function() throttle = {} end)
 		self:RegisterEvent("PLAYER_ENTERING_WORLD")
 	end
