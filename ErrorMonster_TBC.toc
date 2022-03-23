@@ -1,4 +1,4 @@
-## Interface: 20503
+## Interface: 20504
 ## Version: @project-version@
 ## Author: Funkydude
 ## Notes: Redirect character errors, system messages and information messages.
