@@ -17,6 +17,7 @@
 ## X-License: All Rights Reserved: You are free to fork and modify on GitHub, please ask us about anything else.
 ## X-Curse-Project-ID: 3367
 ## X-WoWI-ID: 5949
+## X-Wago-ID: yQKya5K7
 ## SavedVariables: ErrorMonsterDB
 ## OptionalDeps: Ace3, LibSink-2.0
 
