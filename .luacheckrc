@@ -7,7 +7,7 @@ exclude_files = {
 ignore = {
 	"211/L", -- Missing locale entries (unused variable L)
 }
-globals = {
+read_globals = {
 	"CreateFrame",
 	"GetGameMessageInfo",
 	"GetLocale",
