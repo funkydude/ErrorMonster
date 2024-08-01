@@ -16,7 +16,8 @@ do
 		UI_ERROR_MESSAGE = "errors",
 	}
 	local originalOnEvent = UIErrorsFrame:GetScript("OnEvent")
-	local GetGameMessageInfo, PlayVocalErrorSoundID, PlaySound = GetGameMessageInfo, PlayVocalErrorSoundID, PlaySound
+	local GetGameMessageInfo, PlaySound = GetGameMessageInfo, PlaySound
+	local PlayVocalErrorSoundID = C_Sound and C_Sound.PlayVocalErrorSound or PlayVocalErrorSoundID
 	UIErrorsFrame:SetScript("OnEvent", function(self, event, ...)
 		if addon.db.profile[map[event]] then
 			local messageType, message, r, g, b

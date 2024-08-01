@@ -8,6 +8,7 @@ ignore = {
 	"211/L", -- Missing locale entries (unused variable L)
 }
 read_globals = {
+	"C_Sound",
 	"CreateFrame",
 	"GetGameMessageInfo",
 	"GetLocale",
