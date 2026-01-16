@@ -1,6 +1,6 @@
-## Interface: 11506, 11507, 20504, 30404, 40402, 40401, 50500, 110105, 110107, 110100
+## Interface: 11508, 11507, 20505, 30405, 38000, 40402, 50503, 50502, 120001, 110207, 120000
 ## Version: @project-version@
-## Author: Funkydude
+## Author: Funkeh
 ## Notes: Redirect character errors, system messages and information messages.
 ## Notes-deDE: Redirect character errors, system messages and information messages.
 ## Notes-ruRU: Redirect character errors, system messages and information messages.
