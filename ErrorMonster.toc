@@ -19,6 +19,7 @@
 ## X-WoWI-ID: 5949
 ## X-Wago-ID: yQKya5K7
 ## SavedVariables: ErrorMonsterDB
+## LoadSavedVariablesFirst: 1
 ## OptionalDeps: Ace3, LibSink-2.0
 
 embeds.xml
