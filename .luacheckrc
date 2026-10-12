@@ -15,7 +15,5 @@ read_globals = {
 	"GetTime",
 	"InCombatLockdown",
 	"LibStub",
-	"PlayVocalErrorSoundID",
-	"PlaySound",
 	"UIErrorsFrame",
 }
